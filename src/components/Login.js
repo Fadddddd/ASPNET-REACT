@@ -4,12 +4,33 @@ import { Button, TextField, Box, Card, CardContent, Typography } from '@mui/mate
 import useForm from '../hooks/useForm'
 //import Center from './Center'
 
+const getFreshModelObject = () => ({
+    name: '',
+    email: ''
+})
+
 export default function Login() {
     const {values,
         setValues,
         errors,
         setErrors, 
-        handleInputChange } = useForm();
+        handleInputChange
+    } = useForm(getFreshModelObject);
+    
+    const login = e => {
+        e.preventDefault();
+        if(validate())
+        console.log(values);
+    }
+    
+    const validate = () => {
+        let temp = {}
+        temp.email = (/\S+@\.\S+/).test(values.email) ? "" : "Email is not valid."
+        temp.name = values.name != "" ? "" : "This field is required."
+        setErrors(temp)
+        return Object.values(temp).every(x=> x== "")
+}
+
     return (
         //<Center>
          <Card sx={{width:400}}>
@@ -22,16 +43,22 @@ export default function Login() {
                 width:'90%'
             }
       }}>
-      <form noValidate>
+      <form noValidate autoComplete='off' onSubmit={login}>
           <TextField
               label="Email"
-              name="email"
-              variant="outlined"
+                            name="email"
+                            value={values.email}
+                            onChange={handleInputChange}
+                            variant="outlined"
+                            {...(errors.email && {error:true, helperText:errors.email})}
           />
            <TextField
               label="Name"
-              name="name"
-              variant="outlined"
+                            name="name"
+                            value={values.name}
+                            onChange={handleInputChange}
+                            variant="outlined"
+                            {...(errors.name && {error:true, helperText:errors.name})}
           />
           <Button 
               type="submit"
