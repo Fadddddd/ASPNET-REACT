@@ -25,7 +25,7 @@ export default function Login() {
     
     const validate = () => {
         let temp = {}
-        temp.email = (/\S+@\.\S+/).test(values.email) ? "" : "Email is not valid."
+        temp.email = (/\S+@\S+\.\S+/).test(values.email) ? "" : "Email is not valid."
         temp.name = values.name != "" ? "" : "This field is required."
         setErrors(temp)
         return Object.values(temp).every(x=> x== "")
